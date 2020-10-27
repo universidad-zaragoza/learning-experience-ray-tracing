@@ -1,0 +1,61 @@
+#*****************************************************************
+# File:   Makefile_p3_e1
+# Author: PSCD-Unizar
+# Date:   octubre 2017
+# Coms:   Ejemplo de Makefile para la práctica 3 de PSCD
+#         Ejecutar 'make Makefile_p3_e1' para generar el ejecutable
+#         Ejecutar 'make Makefile_p3_e1' clean para limpiar (borrar lo que genere)
+#         Añadir todo lo que sea necesario
+#*****************************************************************
+
+#---------------------------------------------------------
+# macros
+RM = /bin/rm -f  # para limpiar
+CC = g++         # para compilar
+#---------------------------------------------------------
+# vars
+EJEC = main_p3_e1
+BQ_LIB = ../BoundedQueue
+BQ=${BQ_LIB}/BoundedQueue
+CBQ=ConcurrentBoundedQueue
+
+#SEM_LIB=../Semaphore_V4
+#SEM_LIB=../../futex/mutexsemaforos-master
+SEM_LIB=../../futex/mutexsemaforos-sem_consuspension
+
+PFS=${SEM_LIB}/pfs
+
+#SEM=${SEM_LIB}/Semaphore_V4
+SEM=${SEM_LIB}/Semaphore
+
+LOG_LIB = ../Logger_V2
+LOG=${LOG_LIB}/Logger
+#---------------------------------------------------------
+# para compilación y enlazado ("linkado")
+CPPFLAGS=-I. -I${BQ_LIB} -I${SEM_LIB} -I${LOG_LIB} -std=c++11 -fmax-errors=1 -D LOGGING_MODE=true # opciones compilación
+LDFLAGS=-pthread            # opciones de "linkado"
+#---------------------------------------------------------
+
+all: ${EJEC} #lo que se generará al ejecutar "make"
+#---------------------------------------------------------
+# "linkar" y generar ejecutable. Indicamos que "main_p2_e1" requiere tanto "main_p2_e1.o" como "otroFuente.o"
+${EJEC}: ${EJEC}.o ${SEM}.o ${LOG}.o ${PFS}.o
+	${CC} ${EJEC}.o ${SEM}.o ${LOG}.o ${PFS}.o -o ${EJEC} ${CPPFLAGS} ${LDFLAGS}
+
+#---------------------------------------------------------
+${EJEC}.o: ${EJEC}.cpp ${BQ}.hpp ${BQ}.cpp  ${CBQ}.hpp ${CBQ}.cpp
+	${CC} -c ${EJEC}.cpp ${CPPFLAGS}
+#---------------------------------------------------------
+${SEM}.o: ${SEM}.cpp ${SEM}.hpp 
+	${CC} -c ${SEM}.cpp -o ${SEM}.o ${CPPFLAGS}
+
+${PFS}.o: ${PFS}.cpp ${PFS}.hpp 
+	${CC} -c ${PFS}.cpp -o ${PFS}.o ${CPPFLAGS}
+#---------------------------------------------------------
+${LOG}.o: ${LOG}.cpp ${LOG}.hpp 
+	${CC} -c ${LOG}.cpp -o ${LOG}.o ${CPPFLAGS}
+
+#---------------------------------------------------------
+# Cuidado con lo que se pone aquí, que se borra sin preguntar
+clean:
+	$(RM) ${EJEC}.o ${LOG}.o ${SEM}.o ${PFS}.o ${EJEC} 
