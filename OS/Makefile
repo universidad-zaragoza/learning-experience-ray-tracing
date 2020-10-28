@@ -5,5 +5,5 @@ main.o:
 	gcc main.c -c
 
 clean:
-	rm main
+	rm main main.o
 
