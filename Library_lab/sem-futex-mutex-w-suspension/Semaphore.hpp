@@ -1,7 +1,7 @@
 //*****************************************************************
 // File:   Semaphore.hpp
-// Author: PSCD-Unizar
-// Date:   octubre 2016
+// Author: Unizar
+// Date:   octubre 2019
 // Coms:   Especificación de una clase de semáforos, extendida, con operaciones
 //         "wait(nat)" y "signal(nat)"
 //         El valor transmitido en la inicialización ha de ser
@@ -9,35 +9,33 @@
 //         La semántica que implementa es la que en
 //         M. Ben-Ari, "Principles of Concurrent and Distributed Programming", Addison-Wesley, 2006
 //         denomina "Busy-wait" (ver pág. 120)
-//         Para los casos en que el uso del semáforo va a ser exclusivamente como "mutex", Cpp
-//         suministra la clase "std::mutex", cuya especificación se encuentra en 
-//         http://en.cppreference.com/w/cpp/thread/mutex
 //*****************************************************************
 
 #ifndef SEMAPHORE_HPP
 #define SEMAPHORE_HPP
 
-
-#include <mutex>
-#include <condition_variable>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <linux/futex.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+#include <limits.h>
+#include <stdint.h>
+#include <inttypes.h>
 #include <assert.h>
-//#include <pfs.hpp>
-
-//using namespace std; //mutex, condition_variable, etc.
+#include <pfs.hpp>
 
 class Semaphore {
 private:
-//	mipthread_mutex_t mi_mutex;
-//    char MUTEX_IMPLE = 's';   // Seleccion de implmetaciÃ³n de mutex con futex: s, spinlock; n, naive; y K, Kdrepper 
-    std::mutex mtx;          //los dos primeros atributos se entenderán más adelante
-    std::condition_variable_any cv;
+    mutex mtx;          
     int count;                    //natural asociado al semáforo  
     bool initialized;             //para manejar dos constructores distintos
-    int print = 1; // imprimir una vez el tipo de mutex para asegurarme de que uso el correcto
 
-
+    void adormir (int ve);          //dormira si ve es igual a count
+    void despertar ();
 public:
-	//------------------------- constructores
+    //------------------------- constructores
     //Pre:
     //Post: NOT initialized
     Semaphore();
@@ -53,7 +51,7 @@ public:
 
     //Pre: n>=0 AND NOT initialized
     //Post: initialized AND count=n
-    void setInitValue(int n, char &c);
+    void setInitValue(int n, char c='m');
     //------------------------- operaciones estándar
     //Pre: initialized
     //Post: <count++>
@@ -75,7 +73,6 @@ public:
     //          count = count-n
     //      >
     void wait(int n);
-
 };
 
 #endif 

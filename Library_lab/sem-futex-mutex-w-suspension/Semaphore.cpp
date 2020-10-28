@@ -1,8 +1,8 @@
 //*****************************************************************
-// File:   Semaphore_V4.cpp
-// Author: PSCD-Unizar
-// Date:   octubre 2016
-// Coms:   Ver Semaphore_V4.hpp
+// File:   Semaphore.cpp
+// Author: Unizar
+// Date:   octubre 2019
+// Coms:   Ver Semaphore.h
 //         La implementación se entenderá cuando veamos variables
 //         condición y monitores
 //*****************************************************************
@@ -11,80 +11,103 @@
 //http://en.cppreference.com/w/cpp/thread/condition_variable
 //La estudiaremos con más detalle cuando tratemos en la asignatura la parte de "monitores"
 
+#include <Semaphore.hpp>
 
-#include <Semaphore_V4.hpp>
 
 //----------------------------------------------------------
-Semaphore::Semaphore(const int n, const string info) {
+Semaphore::Semaphore(int n) {
     assert(n >= 0);           //aborta si se viola la Pre
-
     count = n;
-    this->info = info;
-    initialized = true;       //ya está inicializado
+    initialized = true;       //ya está inicializad
+	
 }
 //----------------------------------------------------------
-Semaphore::Semaphore(const string info) {
+Semaphore::Semaphore() {
     initialized = false;      //habrá que inicializarlo
-    this->info = info;
 }
 //----------------------------------------------------------
 Semaphore::~Semaphore() {
+    //nada que hacer
+
 }
 //----------------------------------------------------------
-void Semaphore::setInitValue(const int n, const string info) {
-    unique_lock<mutex> lck(mtx); //mutex para atomicidad de la función
+void Semaphore::adormir(int ve){
+//	suspende la ejecución del hilo si el valor de ve no coincide con el de count
+	syscall(__NR_futex, &(count), FUTEX_WAIT, ve, NULL, 0, 0);
+}
+//----------------------------------------------------------
+void Semaphore::despertar(){
+// despierta a todos los hilos para los que fue suspendida su ejecución hasta el momento
+	syscall(__NR_futex, &(count), FUTEX_WAKE, INT_MAX, NULL, 0, 0);
+}
+//----------------------------------------------------------
+void Semaphore::setInitValue(int n, char c) {
+	mtx.setMutexType(c);
+
+    mtx.lock();
 
     assert(!initialized && n >= 0);
 
     count = n;
-    this->info = info;
     initialized = true;
-}
-//----------------------------------------------------------
-void Semaphore::wait() {
-    unique_lock<mutex> lck(mtx);
 
-    assert(initialized);
-
-    while(count == 0) {
-        cv.wait(lck);
-    }
-    count--;
-
-    ADD_EVENT(info + "," + "WAIT," + to_string(count));
+    mtx.unlock();
 }
 //----------------------------------------------------------
 void Semaphore::signal() {
-    unique_lock<mutex> lck(mtx);
+
+	mtx.lock();
 
     assert(initialized);
 
     count++;
-    cv.notify_all(); //podemos cambiar la semántica con cv.notify_one()
+	
+	despertar();
 
-    ADD_EVENT(info + "," + "SIGNAL," + to_string(count));
+	mtx.unlock();
 }
 //----------------------------------------------------------
-void Semaphore::signal(const int n) {
-    unique_lock<mutex> lck(mtx);
+void Semaphore::wait() {
+	
+	mtx.lock();
+
+    assert(initialized);
+
+    while(count == 0) {
+		int vr = count;		
+		mtx.unlock();
+		adormir(vr);
+		mtx.lock();
+    }
+    count--;
+
+	mtx.unlock();
+}
+//----------------------------------------------------------
+void Semaphore::signal(int n) {
+	
+	mtx.lock();
 
     assert(initialized && n>0);
 
     count = count+n;
-    cv.notify_all();
 
-    ADD_EVENT(info + "," + "SIGNAL," + to_string(count)); 
+	mtx.unlock();
 }
 //----------------------------------------------------------
-void Semaphore::wait(const int n) {
-    unique_lock<mutex> lck(mtx);
+void Semaphore::wait(int n) {
+	
+	mtx.lock();
 
     assert(initialized && n>0);
 
     while(count < n) {
-        cv.wait(lck);
+		int vr = count; 
+		mtx.unlock();
+		adormir(vr);
+		mtx.lock();
     }
     count = count-n;
 
-    ADD_EVENT(info + "," + "WAIT," + to_string(count));
+	mtx.unlock();
 }
