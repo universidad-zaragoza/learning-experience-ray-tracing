@@ -22,7 +22,7 @@ $prompt> make
 The 'main' exectuable should be run in accordance with the following usage:
 
 ```
-$prompt> ./main [spin|basic|Kdrepper] #threads(1<=th<=240) #MAX\_SUM max\_rep(>=0)
+$prompt> ./main [spin|basic|Kdrepper] #threads(1<=th<=240) #MAX_SUM max_rep(>=0)
 ```
 
 * \[spin|basic|drepper\]: selects a mutex implementation to be run
