@@ -1,15 +1,15 @@
 /*--------------------------------------------------------------------------------------*/
 // Name: main.c								*/
-// Authorr: Alejandro Valero y Ruben Gran 
+// Authors: Emanuel A. Georgescu, Alejandro Valero, Ruben Gran-Tejero
 // Copyright: Universidad de Zaragoza
-// Date: 12/12/2018
+// Date: 28/10/2020
 // Description: A Learning Experience Toward the Understanding of Abstraction-Level Interactions in Parallel Applications.
 // 		Operating Systems lab.
 //*--------------------------------------------------------------------------------------*/
 
 
 #include <pthread.h>
-#include <stdio.h> // fprintf, setbuf()
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <linux/futex.h>
@@ -29,12 +29,10 @@
 #define MAX_COUNT_EACH 100000LL
 #define TRUE 1
 #define FALSE 0
-#define BUFSIZE 209715200
 
-long long int MAX_SUMA = 10000000LL;
+long long int MAX_SUM = 10000000LL;
 int NUM_THREADS = 240;
-char MUTEX_IMPLE = 's'; //s: spin, b: basic, K: Kdrepper
-int imprimir_traza = 0;
+char MUTEX_IMPL = 's'; //s: spin (SL), b: basic (BS), d: drepper (AS)
 
 struct args {
     void *ptr; 
@@ -42,95 +40,91 @@ struct args {
     double * p_v_trig;
 };
 
-struct tdata{
+struct tdata {
 	int tid;
 };
 
-typedef char mipthread_mutex_t;
+typedef char mypthread_mutex_t;
 
 // mutex variable
-mipthread_mutex_t mi_mutex;
+mypthread_mutex_t my_mutex;
 
-// Funciones a implementar
-int mipthread_spin_init		(mipthread_mutex_t *lock);
-int mipthread_spin_destroy	(mipthread_mutex_t *lock);
-int mipthread_spin_lock		(mipthread_mutex_t *lock, char imple, int numThreads, int indThread);
-int mipthread_spin_unlock	(mipthread_mutex_t *lock, char imple, int numThreads, int indThread);
+// functions to be implemented by the students
+int mypthread_spin_init	(mypthread_mutex_t *lock);
+int mypthread_spin_destroy	(mypthread_mutex_t *lock);
+int mypthread_spin_lock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread);
+int mypthread_spin_unlock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread);
 
-int mipthread_basic_init	(mipthread_mutex_t *lock);
-int mipthread_basic_destroy	(mipthread_mutex_t *lock);
-int mipthread_basic_lock	(mipthread_mutex_t *lock, char imple, int numThreads, int indThread);
-int mipthread_basic_unlock	(mipthread_mutex_t *lock, char imple, int numThreads, int indThread);
+int mypthread_basic_init	(mypthread_mutex_t *lock);
+int mypthread_basic_destroy	(mypthread_mutex_t *lock);
+int mypthread_basic_lock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread);
+int mypthread_basic_unlock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread);
 
-int mipthread_Kdrepper_init	(mipthread_mutex_t *lock);
-int mipthread_Kdrepper_destroy	(mipthread_mutex_t *lock);
-int mipthread_Kdrepper_lock	 (mipthread_mutex_t *lock, char imple, int numThreads, int indThread);
-int mipthread_Kdrepper_unlock(mipthread_mutex_t *lock, char imple, int numThreads, int indThread);
+int mypthread_drepper_init	(mypthread_mutex_t *lock);
+int mypthread_drepper_destroy	(mypthread_mutex_t *lock);
+int mypthread_drepper_lock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread);
+int mypthread_drepper_unlock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread);
 
-int mipthread_spin_init		(mipthread_mutex_t *lock){
+int mypthread_spin_init	(mypthread_mutex_t *lock){
 	*lock = 0;
     	return 0;
 }
 
-int mipthread_spin_destroy	(mipthread_mutex_t *lock){
+int mypthread_spin_destroy	(mypthread_mutex_t *lock){
     *lock = 0;
         return 0;
 }
 
-int mipthread_spin_lock		(mipthread_mutex_t *lock, char imple, int numThreads, int indThread){
+int mypthread_spin_lock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread){
 
     while(__atomic_test_and_set(lock, __ATOMIC_SEQ_CST)){}
 
 }
 
-int mipthread_spin_unlock	(mipthread_mutex_t *lock, char imple, int numThreads, int indThread){
+int mypthread_spin_unlock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread){
 
     __atomic_store_n(lock, 0, __ATOMIC_SEQ_CST);
-
-    //other way:
-    //*lock = 0;
-
 }
 
-int mipthread_basic_init	(mipthread_mutex_t *lock){
+int mypthread_basic_init	(mypthread_mutex_t *lock){
 
 	*lock = 0;
         return 0;
 }
 
-int mipthread_basic_destroy	(mipthread_mutex_t *lock){
+int mypthread_basic_destroy	(mypthread_mutex_t *lock){
 	*lock = 0;
         return 0;
 }
 
-int mipthread_basic_lock	(mipthread_mutex_t *lock, char imple, int numThreads, int indThread){
+int mypthread_basic_lock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread){
 
-    int duerme = -1;
+    int sleep = -1;
     int c = __atomic_test_and_set(lock, __ATOMIC_SEQ_CST);
     while (c==1) {
-        duerme = syscall(__NR_futex, lock, FUTEX_WAIT, c, NULL, 0, 0);
+        sleep = syscall(__NR_futex, lock, FUTEX_WAIT, c, NULL, 0, 0);
         c = __atomic_test_and_set(lock, __ATOMIC_SEQ_CST);
     }
 
 }
 
-int mipthread_basic_unlock	(mipthread_mutex_t *lock, char imple, int numThreads, int indThread){
+int mypthread_basic_unlock	(mypthread_mutex_t *lock, char impl, int numThreads, int indThread){
 
     __atomic_store_n(lock, 0, __ATOMIC_SEQ_CST);
     syscall(__NR_futex, lock, FUTEX_WAKE, 1, NULL, 0, 0);
 }
 
-int mipthread_Kdrepper_init	(mipthread_mutex_t *lock){
+int mypthread_drepper_init	(mypthread_mutex_t *lock){
     *lock = 0;
         return 0;
 }
 
-int mipthread_Kdrepper_destroy	(mipthread_mutex_t *lock){
+int mypthread_drepper_destroy	(mypthread_mutex_t *lock){
     *lock = 0;
         return 0;
 }
 
-int mipthread_Kdrepper_lock(mipthread_mutex_t *lock, char imple, int numThreads, int indThread){
+int mypthread_drepper_lock(mypthread_mutex_t *lock, char impl, int numThreads, int indThread){
     int c = 0;
 
 
@@ -145,7 +139,6 @@ int mipthread_Kdrepper_lock(mipthread_mutex_t *lock, char imple, int numThreads,
     }
 
     while (c != 0) { // Wait until is unlocked
-        if (imprimir_traza) fprintf(stderr, "%c\t%d\tespera\t%d\t\n", MUTEX_IMPLE, NUM_THREADS, indThread);
         if (-1 == syscall(__NR_futex, lock, FUTEX_WAIT, 2, NULL, 0, 0)){
             // perror("lock");
         }
@@ -156,58 +149,55 @@ int mipthread_Kdrepper_lock(mipthread_mutex_t *lock, char imple, int numThreads,
 
 }
 
-int mipthread_Kdrepper_unlock   (mipthread_mutex_t *lock, char imple, int numThreads, int indThread){
+int mypthread_drepper_unlock   (mypthread_mutex_t *lock, char impl, int numThreads, int indThread){
 
     if (__atomic_fetch_sub( lock, 1, __ATOMIC_SEQ_CST) != 1) {
         // There are waiters, wake one
         *lock = 0;
         syscall(__NR_futex, (int *)lock, FUTEX_WAKE, 1, NULL, 0, 0);
     }
-
 }
 
 
 // Shared variable 
 long long int shared_counter = 0;
-char nofin = TRUE;
-int participa_th [240];
+char noend = TRUE;
+int part_th [240];
 
-struct timespec tdormir;
+double trigFunc(double input);
 
-double trigFunc(double entrada);
-
-void *contar(void *input) {
+void *count(void *input) {
 
     int thid = (*((struct tdata *)((struct args*)input)->ptr)).tid;
 
-    participa_th[thid] = 0;
+    part_th[thid] = 0;
 
     int rand_int;
     double result = 0;
     int max_rep = ((struct args*)input)->max_rep;
     double * p_v_trig = ((struct args*)input)->p_v_trig;
 
-	while (nofin){
+	while (noend){
 
-		if (MUTEX_IMPLE == 's') mipthread_spin_lock(&mi_mutex, MUTEX_IMPLE, NUM_THREADS, thid);
-		if (MUTEX_IMPLE == 'b') mipthread_basic_lock(&mi_mutex, MUTEX_IMPLE, NUM_THREADS, thid);
-		if (MUTEX_IMPLE == 'K') mipthread_Kdrepper_lock(&mi_mutex, MUTEX_IMPLE, NUM_THREADS, thid);
+		if (MUTEX_IMPL == 's') mypthread_spin_lock(&my_mutex, MUTEX_IMPL, NUM_THREADS, thid);
+		if (MUTEX_IMPL == 'b') mypthread_basic_lock(&my_mutex, MUTEX_IMPL, NUM_THREADS, thid);
+		if (MUTEX_IMPL == 'd') mypthread_drepper_lock(&my_mutex, MUTEX_IMPL, NUM_THREADS, thid);
 
        
-		if(shared_counter >= MAX_SUMA){
+		if(shared_counter >= MAX_SUM){
 
-			nofin = FALSE;
+			noend = FALSE;
 
 		}else{
 
-	            participa_th[(*((struct tdata *)((struct args*)input)->ptr)).tid] ++;
+	            part_th[(*((struct tdata *)((struct args*)input)->ptr)).tid]++;
         	    shared_counter = shared_counter + 1;
 
 		}
 
-		if (MUTEX_IMPLE == 's') mipthread_spin_unlock(&mi_mutex, MUTEX_IMPLE, NUM_THREADS, thid);
-		if (MUTEX_IMPLE == 'b') mipthread_basic_unlock(&mi_mutex, MUTEX_IMPLE, NUM_THREADS, thid);
-		if (MUTEX_IMPLE == 'K') mipthread_Kdrepper_unlock(&mi_mutex, MUTEX_IMPLE, NUM_THREADS, thid);
+		if (MUTEX_IMPL == 's') mypthread_spin_unlock(&my_mutex, MUTEX_IMPL, NUM_THREADS, thid);
+		if (MUTEX_IMPL == 'b') mypthread_basic_unlock(&my_mutex, MUTEX_IMPL, NUM_THREADS, thid);
+		if (MUTEX_IMPL == 'd') mypthread_drepper_unlock(&my_mutex, MUTEX_IMPL, NUM_THREADS, thid);
 
         if(max_rep > 0) {
             rand_int = rand();
@@ -222,30 +212,27 @@ void *contar(void *input) {
 
 }
 
-double trigFunc(double entrada) {
-    return sin(entrada*786.12);
+double trigFunc(double input) {
+    return sin(input*786.12);
 }
-
-char buf[BUFSIZE];
 
 int main (int argc, char *argv[]) {
 
-    if ((argc != 5)||((argv[1][0]!='s')&&(argv[1][0]!='b')&&(argv[1][0]!='K'))||(atoi(argv[2])>240)||(atoi(argv[2])<=0)||(atoi(argv[4])<0)) {
-        printf ("USO: ./main [spin|basic|Kdrepper] #threads(1<=th<=240) #MAX_SUMA max_rep(>=0)\n");
+    if ((argc != 5)||((argv[1][0]!='s')&&(argv[1][0]!='b')&&(argv[1][0]!='d'))||(atoi(argv[2])>240)||(atoi(argv[2])<=0)||(atoi(argv[4])<0)) {
+        printf ("USAGE: ./main [spin|basic|drepper] #threads(1<=th<=240) #MAX_SUM max_rep(>=0)\n");
         exit(1);
     }
 
     //input arguments
-    MUTEX_IMPLE = argv[1][0]; // primer carácter
+    MUTEX_IMPL = argv[1][0]; // first char
     NUM_THREADS = atoi(argv[2]);
-    MAX_SUMA = atol(argv[3]);
+    MAX_SUM = atol(argv[3]);
     int max_rep = atoi(argv[4]);
 
-    struct args *argumentos = (struct args *)malloc(sizeof(struct args)); 
+    struct args *argus = (struct args *)malloc(sizeof(struct args)); 
     srand(5);
 
     struct timeval startt, endd; //gettimeofday
-    tdormir.tv_sec = 0;
 
     pthread_t threads[NUM_THREADS];
     int rc, i;
@@ -259,33 +246,32 @@ int main (int argc, char *argv[]) {
 
     gettimeofday(&startt, NULL); 
 
-    if (MUTEX_IMPLE == 's') mipthread_spin_init(&mi_mutex);
-    if (MUTEX_IMPLE == 'b') mipthread_basic_init(&mi_mutex);
-    if (MUTEX_IMPLE == 'K') mipthread_Kdrepper_init(&mi_mutex);
+    if (MUTEX_IMPL == 's') mypthread_spin_init(&my_mutex);
+    if (MUTEX_IMPL == 'b') mypthread_basic_init(&my_mutex);
+    if (MUTEX_IMPL == 'd') mypthread_drepper_init(&my_mutex);
 
-    argumentos -> max_rep = max_rep;
-    argumentos -> p_v_trig = p_v_trig;
+    argus -> max_rep = max_rep;
+    argus -> p_v_trig = p_v_trig;
     for(i=0; i<NUM_THREADS; i++) {
         id[i].tid = i;
-        argumentos -> ptr = (void *) &id[i];
-        rc = pthread_create(&threads[i], NULL, contar, (void *) argumentos);
-        if (rc != 0) printf("error al crear un hilo \n");
+        argus -> ptr = (void *) &id[i];
+        rc = pthread_create(&threads[i], NULL, count, (void *) argus);
+        if (rc != 0) fprintf(stderr, "Error creating a thread\n");
     }
 
     for(i=0; i<NUM_THREADS; i++) {
         rc = pthread_join(threads[i], NULL);
-        if (rc != 0) printf("error al crear un hilo \n");
+        if (rc != 0) fprintf(stderr, "Error joining a thread\n");
     }    
 
     gettimeofday(&endd, NULL); 
     long long seconds = (long long)(endd.tv_sec - startt.tv_sec); 
     long long micros = (long long)((seconds * 1000000) + endd.tv_usec) - (startt.tv_usec); 
-    double milisF = ((double)micros)/((double)1000); 
+    double millisF = ((double)micros)/((double)1000); 
     
 
-    if (shared_counter == MAX_SUMA) {
-
-        printf("%c\t%d\t%lf\n", MUTEX_IMPLE, NUM_THREADS, milisF); // AÑADIDO
+    if (shared_counter == MAX_SUM) {
+        printf("%c\t%d\t%lf\n", MUTEX_IMPL, NUM_THREADS, millisF);
 
         // export intermediate results 
         FILE * fp;
@@ -296,16 +282,13 @@ int main (int argc, char *argv[]) {
         fprintf(fp, "\n");
         fflush(fp);
         fclose(fp);
-
     }
-    else {
-        printf("ERROR\n"); 
+    else
         fprintf(stderr, "ERROR\n");
-    }
 
-    if (MUTEX_IMPLE == 's') mipthread_spin_destroy(&mi_mutex);
-    if (MUTEX_IMPLE == 'b') mipthread_basic_destroy(&mi_mutex);
-    if (MUTEX_IMPLE == 'K') mipthread_Kdrepper_destroy(&mi_mutex);
+    if (MUTEX_IMPL == 's') mypthread_spin_destroy(&my_mutex);
+    if (MUTEX_IMPL == 'b') mypthread_basic_destroy(&my_mutex);
+    if (MUTEX_IMPL == 'd') mypthread_drepper_destroy(&my_mutex);
 
     return 0;
 
