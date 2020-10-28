@@ -283,7 +283,7 @@ int main (int argc, char *argv[]) {
     double milisF = ((double)micros)/((double)1000); 
     
 
-    if (contador_compartido == MAX_SUMA) {
+    if (shared_counter == MAX_SUMA) {
 
         printf("%c\t%d\t%lf\n", MUTEX_IMPLE, NUM_THREADS, milisF); // AÑADIDO
 
