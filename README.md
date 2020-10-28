@@ -1,8 +1,14 @@
-# Interactions between Abstraction Level: Ray Tracing
+# Interactions between Abstraction Levels: Ray Tracing
 
-This repository is part of a teaching innovation project for the Computer Engineering Degree of the University of Zaragoza.
-The project is structured into 4 folders, one for each lab session of the involved course in the learning experince. In each folder, 
-it can be found a working implementation of each lab. 
+This project consists of four lab assignments from different courses of the Degree in Computer Engineering from Universidad de Zaragoza, Spain. The labs conform a multidisciplinary project whose main objective is to provide the students of the degree of a global vision of a computer system.
+
+This work allows students to consolidate their knowledge of atomicity, consistency, parallelism, and concurrency present in a computer system. The system to be implemented consists of a ray tracer that uses concurrent queues, which employ library functions based on mutexes or system calls like futex implemented directly in assembly language. This way, the project covers the levels of abstraction of Application, Library, Operating System, and Instruction Set Architecture, involving the courses of Computer Graphics, Distributed and Concurrent Systems Programming, Operating Systems, and Multiprocessors, respectively.
+
+In each 2-hour lab session, a different level of abstraction is covered, adding pointers to the rest of the levels. To strengthen the vision of a whole computer system, the Raspberry Pi platform is used in all the labs. Because the distribution of courses in different academic years of the degree, the development cannot be carried out from the Application level down to the Instruction Set Architecture. Instead, students begin to develop the system in the order established by the degree. In the first lab (Library lab), the concurrent queues are implemented using library functions. In the second lab (OS lab), functions are replaced by operating system calls. The third lab (ISA lab) replaces the system calls with assembly instructions. Finally, in the last lab (Application lab) a ray tracer makes use of the concurrent queues.
+
+The project is structured in 4 folders, one for each lab session of the involved course in the learning experince. A working lab implementation can be found in each folder.
+
+The material is offered by the Undergraduate Student Emanuel A. Georgescu and by Professors Alejandro Valero, Rubén Gran-Tejero, Darío Suárez-Gracia, Joaquín Ezpeleta, Pedro Álvarez, Adolfo Muñoz, Luis M. Ramos, and Pablo Ibáñez. All professors are members of the Department of Computer Science and Systems Engineering (DIIS) from Universidad de Zaragoza.
 
 ## OS lab
 
