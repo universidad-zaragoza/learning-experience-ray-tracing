@@ -19,7 +19,7 @@ syscalls. The folder contains a 'Makefile' and the source code 'main.c'. In orde
 $prompt> make 
 ```
 
-The 'main' exectuable should be run in accordance with the following usage:
+The 'main' executable should be run in accordance with the following usage:
 
 ```
 $prompt> ./main [spin|basic|Kdrepper] #threads(1<=th<=240) #MAX_SUM max_rep(>=0)
