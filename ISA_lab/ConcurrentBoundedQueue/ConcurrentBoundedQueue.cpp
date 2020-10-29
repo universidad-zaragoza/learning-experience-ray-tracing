@@ -15,7 +15,7 @@
 
 //-----------------------------------------------------
 template <class T>
-ConcurrentBoundedQueue<T>::ConcurrentBoundedQueue(const int N, char &c) {
+ConcurrentBoundedQueue<T>::ConcurrentBoundedQueue(const int N, char c) {
 
     this->N = N;
     bq = new BoundedQueue<T>(N);

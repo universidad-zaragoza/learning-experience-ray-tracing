@@ -37,7 +37,7 @@ public:
     //Post: this->bq=< > AND #this=N AND this->log=nullptr
     //Com:  constructor
 
-    ConcurrentBoundedQueue(const int N, char &c);
+    ConcurrentBoundedQueue(const int N, char c='n');
     //-----------------------------------------------------
     //Pre:
     //Post:

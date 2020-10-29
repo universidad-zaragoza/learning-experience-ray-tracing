@@ -67,18 +67,17 @@ double trigFunc(double entrada) {
 
 int main(int argc, char* argv[]) {
     srand(5);
-    if (argc != 5 || ((argv[3][0]!='s')&&(argv[3][0]!='n')&&(argv[3][0]!='K')) ) {
-        fprintf (stderr, "USAGE: ./main QUEUE_SIZE N_READERS mutex_type(s,n,K) max_rep\n");
+    if (argc != 4 ) {
+        fprintf (stderr, "USAGE: ./main QUEUE_SIZE N_READERS max_rep\n");
         exit(1);
     }
     //argv[0] es nombre programa  
     int TAM_COLA = atoi(argv[1]); 
     int N_LECTORES = atoi(argv[2]);
-    char mutex_type = argv[3][0];
-    int max_rep = atoi(argv[4]);
+    int max_rep = atoi(argv[3]);
 
     // variables compartidas
-    ConcurrentBoundedQueue<int> cbq(TAM_COLA, mutex_type);
+    ConcurrentBoundedQueue<int> cbq(TAM_COLA);
     bool no_vacia = true;
     int vector_comprobacion[TAM_COLA] ;
     int * p_vector_comprbacion = vector_comprobacion;
@@ -127,11 +126,11 @@ int main(int argc, char* argv[]) {
 
     // EXPORTAR RESULTADOS
     if (error == true) {
-        fprintf(stdout, "%c\t%d\t%lf\t%d\t%d ERROR\n", mutex_type, N_LECTORES, milisF, TAM_COLA, max_rep);
+        fprintf(stdout, "%d\t%lf\t%d\t%d ERROR\n", N_LECTORES, milisF, TAM_COLA, max_rep);
         fprintf(stderr, "ERROR \n");
     }
     else {
-        fprintf(stdout, "%c\t%d\t%lf\t%d\t%d\n", mutex_type, N_LECTORES, milisF, TAM_COLA, max_rep);
+        fprintf(stdout, "%d\t%lf\t%d\t%d\n", N_LECTORES, milisF, TAM_COLA, max_rep);
 
         // Para que el compilador lo vea como info útil
         fprintf(stderr, "TODO PERFECTO \t");
