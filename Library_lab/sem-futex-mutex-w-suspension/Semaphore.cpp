@@ -1,11 +1,13 @@
-//*****************************************************************
-// File:   Semaphore.cpp
-// Author: Unizar
-// Date:   octubre 2019
-// Coms:   Ver Semaphore.h
-//         La implementación se entenderá cuando veamos variables
-//         condición y monitores
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          Semaphore.cpp								
+// Authors:       Pedro Alvarez, Joaquin Ezpeleta, Emanuel A. Georgescu, Alejandro Valero,
+//                Ruben Gran-Tejero
+// Copyright:     Universidad de Zaragoza
+// Date:          28/10/2020
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                See Semaphore.hpp
+//*--------------------------------------------------------------------------------------*/
 
 //Infoŕmación útil para entender la implementación en
 //http://en.cppreference.com/w/cpp/thread/condition_variable

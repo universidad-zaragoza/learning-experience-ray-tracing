@@ -1,18 +1,20 @@
-//*****************************************************************
-// File:   Semaphore.hpp
-// Author: PSCD-Unizar
-// Date:   octubre 2016
-// Coms:   Especificación de una clase de semáforos, extendida, con operaciones
-//         "wait(nat)" y "signal(nat)"
-//         El valor transmitido en la inicialización ha de ser
-//         no negativo. Si fuera negativo, da error y aborta la ejecución.
-//         La semántica que implementa es la que en
-//         M. Ben-Ari, "Principles of Concurrent and Distributed Programming", Addison-Wesley, 2006
-//         denomina "Busy-wait" (ver pág. 120)
-//         Para los casos en que el uso del semáforo va a ser exclusivamente como "mutex", Cpp
-//         suministra la clase "std::mutex", cuya especificación se encuentra en 
-//         http://en.cppreference.com/w/cpp/thread/mutex
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          Semaphore.hpp								
+// Authors:       Pedro Alvarez, Joaquin Ezpeleta, Emanuel A. Georgescu, Alejandro Valero,
+//                Ruben Gran-Tejero
+// Copyright:     Universidad de Zaragoza
+// Date:          28/10/2020
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                Specificaton a Semaphore class, extended with methods "wait(nat)" and 
+//                "signal(nat)". The initialization value must be non negative. In such a 
+//                case, an error is raised and the execution is aborted. The implemented
+//                semantic for this semaphore is the one named as "busy-wait" in M. Ben-Ari, "Principles of Concurrent 
+//                and Distributed Programming", Addison-Wesley, 2006 (page 120).
+//                For thos cases in which the use of the semaphores is the same as a mutex
+//                C++ offers the clas "std::mutex", whose specification can be found at
+//                http://en.cppreference.com/w/cpp/thread/mutex
+/*--------------------------------------------------------------------------------------*/
 
 #ifndef SEMAPHORE_HPP
 #define SEMAPHORE_HPP
