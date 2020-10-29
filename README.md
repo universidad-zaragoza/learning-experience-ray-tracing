@@ -47,6 +47,23 @@ $prompt> ./main QUEUE_SIZE N_READERS MUTEX_TYPE(s,n,K) max_rep
 * max\_rep(>=0): number of times that the entire experiment is repeated
 
 ## ISA lab
+This folder holds the code for a Concurrent Bounded Queue, which uses a Semaphore class based on the 'sem-futex-mutex-busy-wait' implementation of previous **Library lab**. The mutex implementation to guarantee mutual exclusion in the critical sections of this Semaphore class is coded in ARMv8 assembly. 
+There are provided two alternatives for the mutex assembly:
+1. A spin-lock approach implemented with the ISA instructions 'ldaxr' and 'stlxr' under synchronization load-link store-conditional paradigm. 
+2. An extension of the previous approach that relies on ISA instructions 'wfe' and 'sevl' to hint a low-power state of cores under a contention scenario.  
+The folder contains a 'Makefile' and the source code 'main.c'. In order to compile the 'main.c', it should be run:
+```
+$prompt> make 
+```
+After the execution of the 'make' command there are provided two different executables meant to benchmark the implementation of a Concurrent Bounded Queue with the two types of underlying mutex implementations: 'main\_isa\_mtx' and 'main\_isa\_mtx\_sleep'. First one corresponds to a basic mutex implementation and the second with an extension to hint a low-power state for cores under a contention scenario.  
+```
+$prompt> ./main QUEUE_SIZE N_READERS max_rep
+```
+
+* QUEUE\_SIZE: size of the concurrent bounded queue. Measured in number of item that can be read or extrated
+* N\_READERS: number of concurrent reader threads to the queue
+* max\_rep(>=0): number of times that the entire experiment is repeated
+
 
 ## Application lab
 
