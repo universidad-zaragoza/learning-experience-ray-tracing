@@ -1,10 +1,13 @@
 /*--------------------------------------------------------------------------------------*/
-// Name: practica_futex.c								*/
-// Author: Alejandro Valero y Ruben Gran 
-// Copyright: Universidad de Zaragoza
-// Date: 12/12/2018
-// Description: Mutex implementation and performance assesment
-/*--------------------------------------------------------------------------------------*/
+// Name:          pfs.hpp								
+// Authors:       Emanuel A. Georgescu, Alejandro Valero, Ruben Gran-Tejero
+// Copyright:     Universidad de Zaragoza
+// Date:          28/10/2020
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                Specification of a mutex class implemented with futex system call.
+//                Three approaches delivered: spin-lock, naive, Kdrepper
+//*--------------------------------------------------------------------------------------*/
 
 #ifndef PFS_HPP
 #define PFS_HPP

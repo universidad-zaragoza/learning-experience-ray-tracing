@@ -1,10 +1,13 @@
-//*****************************************************************
-// File:   ConcurrentConcurrentBoundedQueue.cpp
-// Author: PSCD-Unizar
-// Date:   Octubre 2018
-// Coms:   A Learning Experience Toward the Understanding of Abstraction-Level Interactions in Parallel Application
-//	   PSCD lab session
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          BoundedQueue.cpp								
+// Authors:       Pedro Alvarez, Joaquin Ezpeleta, Emanuel A. Georgescu, Alejandro Valero,
+//                Ruben Gran-Tejero
+// Copyright:     Universidad de Zaragoza
+// Date:          28/10/2020
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                Class specification
+//*--------------------------------------------------------------------------------------*/
 
 #include "ConcurrentBoundedQueue.hpp"
 #include <cassert>

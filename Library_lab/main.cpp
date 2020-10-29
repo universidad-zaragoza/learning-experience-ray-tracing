@@ -1,11 +1,13 @@
-//*****************************************************************
-// File:   main_p3_e1.cpp (esqueleto)
-// Author: PSCD-Unizar
-// Date:   octubre 2018
-// Coms:   Parte del práctica 1 de PSCD
-//         Compilar mediante el makefile asociado
-//         Invocación: main_p3_e1
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:         main.c								
+// Authors:      Emanuel A. Georgescu, Alejandro Valero, Ruben Gran-Tejero, Pedro Alvarez, 
+//               Joaquin Ezpeleta
+// Copyright:    Universidad de Zaragoza
+// Date:         28/10/2020
+// Description:  A Learning Experience Toward the Understanding of Abstraction-Level 
+//               Interactions in Parallel Applications.
+// 		         Library lab.
+//*--------------------------------------------------------------------------------------*/
  
 #include <iostream>
 #include <thread>

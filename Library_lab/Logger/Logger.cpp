@@ -1,11 +1,14 @@
-//*****************************************************************
-// File:   Logger.cpp
-// Author: J. Ezpeleta-Unizar
-// Date:   march 2017
-// Coms:   A (monitor) class for the concurrent access to log files
-//         The interesting thing is the way a FIFO access is granted to 
-//         the monitor
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          Logger.cpp								
+// Authors:       Joaquin Ezpeleta
+// Copyright:     Universidad de Zaragoza
+// Date:          march 2017
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                A (monitor) class for the concurrent access to log files
+//                The interesting thing is the way a FIFO access is granted to 
+//                the monitor
+//*--------------------------------------------------------------------------------------*/
 
 #include <Logger.hpp>
 #include <errno.h>

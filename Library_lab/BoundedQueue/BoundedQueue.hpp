@@ -1,13 +1,17 @@
-//*****************************************************************
-// File:   BoundedQueue.hpp
-// Author: PSCD-Unizar
-// Date:   septiembre 2018
-// Coms:   Especificación de una cola FIFO acotada.
-//         Una cola será denotada como "< d_1 ... d_n >", de manera que "d_1"
-//         hace referencia al primero de la cola (el dato más antiguo) y "d_n"
-//         al último. "n>0" implicará que la cola es no vacía. "this" se referirá a la propia cola.
-//         Denotaremos mediante "#this" el número máximo de elementos que puede contener.
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          BoundedQueue.hpp								
+// Authors:       Pedro Alvarez, Joaquin Ezpeleta, Emanuel A. Georgescu, Alejandro Valero,
+//                Ruben Gran-Tejero
+// Copyright:     Universidad de Zaragoza
+// Date:          28/10/2020
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                Specification of a bounded FIFO queue. A queue is denoted as "< d_1 ... d_n >",
+//                so that "d_1" refers to the first elemente of the queue (the oldest one) and
+//                "d_n" to the last one. The condition "n>0" implies that the queue is not empty.
+//                "this" refers to the queue itself. We denote as "#this", the maximum number 
+//                of elements that the queue can contain.
+//*--------------------------------------------------------------------------------------*/
 
 #ifndef BOUNDED_QUEUE
 #define BOUNDED_QUEUE

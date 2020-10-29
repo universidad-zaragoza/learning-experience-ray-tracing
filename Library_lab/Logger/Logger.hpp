@@ -1,11 +1,14 @@
-//*****************************************************************
-// File:   Logger.hpp
-// Author: J. Ezpeleta-Unizar
-// Date:   March 2017
-// Coms:   A (monitor) class for the concurrent access to log files
-//         The interesting thing is the way a FIFO access is granted to 
-//         the monitor. See class code
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          BoundedQueue.hpp								
+// Authors:       Joaquin Ezpeleta
+// Copyright:     Universidad de Zaragoza
+// Date:          March 2017
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//                A (monitor) class for the concurrent access to log files
+//                The interesting thing is the way a FIFO access is granted to 
+//                the monitor. See class code
+//*--------------------------------------------------------------------------------------*/
 
 #ifndef LOGGER_HPP
 #define LOGGER_HPP

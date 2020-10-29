@@ -1,9 +1,12 @@
-//*****************************************************************
-// File:   ConcurrentBoundedQueue.hpp
-// Author: PSCD-Unizar
-// Date:   Octubre 2018
-// Coms:   A Learning Experience Toward the Understanding of Abstraction-Level Interactions in Parallel Application 
-//*****************************************************************
+/*--------------------------------------------------------------------------------------*/
+// Name:          ConcurrentBoundedQueue.hpp								
+// Authors:       Pedro Alvarez, Joaquin Ezpeleta, Emanuel A. Georgescu, Alejandro Valero,
+//                Ruben Gran-Tejero
+// Copyright:     Universidad de Zaragoza
+// Date:          28/10/2020
+// Description:   A Learning Experience Toward the Understanding of Abstraction-Level 
+//                Interactions in Parallel Applications. Library lab.
+//*--------------------------------------------------------------------------------------*/
 
 #ifndef CONCURRENT_BOUNDED_QUEUE
 #define CONCURRENT_BOUNDED_QUEUE
