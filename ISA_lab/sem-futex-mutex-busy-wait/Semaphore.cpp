@@ -9,10 +9,6 @@
 //                See Semaphore.hpp
 //*--------------------------------------------------------------------------------------*/
 
-//Infoŕmación útil para entender la implementación en
-//http://en.cppreference.com/w/cpp/thread/condition_variable
-//La estudiaremos con más detalle cuando tratemos en la asignatura la parte de "monitores"
-
 //"The condition_variable class is a synchronization primitive that can be used to block a thread,
 //or multiple threads at the same time, until:
 //a notification is received from another thread
@@ -31,14 +27,14 @@
 
 //----------------------------------------------------------
 Semaphore::Semaphore(int n) {
-    assert(n >= 0);           //aborta si se viola la Pre
+    assert(n >= 0);           
     count = n;
-    initialized = true;       //ya está inicializad
+    initialized = true;       
 	
 }
 //----------------------------------------------------------
 Semaphore::Semaphore() {
-    initialized = false;      //habrá que inicializarlo
+    initialized = false;      
 }
 //----------------------------------------------------------
 Semaphore::~Semaphore() {

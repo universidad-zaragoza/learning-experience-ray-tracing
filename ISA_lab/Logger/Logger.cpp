@@ -18,7 +18,6 @@
 Logger::Logger(string logName):
     logName(logName) {
 
-    
     getMainID();
     messages = new string[MAX_MESS];
     echoed = false;

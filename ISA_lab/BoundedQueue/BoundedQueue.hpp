@@ -61,12 +61,12 @@ public:
     //-----------------------------------------------------
     //Pre:
     //Post:
-    //Com:  muestra la cola por la salida estándar, separando los elementos mediante comas, y salta de línea
+    //Com:  dump elements to the standard output
     void print();
     //-----------------------------------------------------
     //Pre:
     //Post: copy=this
-    //Com:  Clonación de la cola
+    //Com:  clone queue
     void clone(BoundedQueue<T> &copy);
     //----------------------------------------------------- 
 private:
@@ -75,6 +75,5 @@ private:
     T *data;
     int pri, sig;
 };
-// Para poder trabajar con tipos genéricos, declaración y código deben estar juntos
 #include "BoundedQueue.cpp"
 #endif

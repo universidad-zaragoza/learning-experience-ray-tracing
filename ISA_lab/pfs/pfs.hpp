@@ -13,7 +13,7 @@ class mutex
 {
   private:
     char type = 'n'; //s, n, K
-    int mi_mutex=0; // mutex para utilizar con las funciones definidas en ensamblador
+    int mi_mutex=0; 
   public:
   mutex();
   ~mutex();
