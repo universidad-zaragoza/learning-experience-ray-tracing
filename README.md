@@ -31,6 +31,20 @@ $prompt> ./main [spin|basic|Kdrepper] #threads(1<=th<=240) #MAX_SUM max_rep(>=0)
 * max\_rep(>=0): number of times that the entire experiment is repeated
 
 ## Library lab
+This folder holds the code for a Concurrent Bounded Queue, which uses a Semaphore class. Three different implantations are provided for this Semaphore class, and it can be found at folders: 'sem-library-mutex', 'sem-futex-mutex-busy-wait', and 'sem-futex-mutex-w-suspension'. The first uses mutex from the standard library to protect critical sections, addtionally, it uses conditional variables to suspend the execution in case of contention. The second and third versions use the system call futex to protect critial sections on a busy-wait or with-suspension approach, respectively. Additionally, these two last can rely on a mutex implemntation based on spin-lock, naive, and Kdrepper, as it can be seen n 'OS\_lab'. The folder contains a 'Makefile' and the source code 'main.c'. In order to compile the 'main.c', it should be run:
+```
+$prompt> make 
+```
+After the execution of the 'make' command there are provided three different executables meant to benchmark the implementation of a Concurrent Bounded Queue with the three types of underlying mutex implementations: 'main\_lib', 'main\_futex\_busy\_wait', and 'main\_futex\_suspension'.  
+
+```
+$prompt> ./main QUEUE_SIZE N_READERS MUTEX_TYPE(s,n,K) max_rep
+```
+
+* QUEUE\_SIZE: size of the concurrent bounded queue. Measured in number of item that can be read or extrated
+* N\_READERS: number of concurrent reader threads to the queue
+* MUTEX\_TYPE: when applicable it reffers to the approach to implement the mutex itself, as it can be seen in 'OS\_lab' 
+* max\_rep(>=0): number of times that the entire experiment is repeated
 
 ## ISA lab
 
