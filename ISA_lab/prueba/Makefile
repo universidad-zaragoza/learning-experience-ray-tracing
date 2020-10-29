@@ -57,7 +57,7 @@ ${EJEC}.o: ${EJEC}.cpp ${BQ}.hpp ${BQ}.cpp  ${CBQ}.hpp ${CBQ}.cpp
 ${SEM_L}.o: ${SEM_L}.cpp ${SEM_L}.hpp 
 	${CC} -c ${SEM_L}.cpp -o ${SEM_L}.o ${CPPINC} -I${SEM_LIB} ${CPPFLAGS}
 #---------------------------------------------------------
-${PFS}.o: ${PFS}.cpp ${PFS}.hpp 
+${PFS}.o: ${PFS}.cpp ${PFS}.hpp  
 	${CC} -c ${PFS}.cpp -o ${PFS}.o ${CPPINC} ${CPPFLAGS}
 #---------------------------------------------------------
 ${SEM_FBW}.o: ${SEM_FBW}.cpp ${SEM_FBW}.hpp 
