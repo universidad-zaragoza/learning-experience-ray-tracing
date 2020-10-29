@@ -26,8 +26,10 @@ SEM_L=${SEM_LIB}/Semaphore
 SEM_FBW=${SEM_FUT_BW}/Semaphore
 SEM_FSU=${SEM_FUT_SU}/Semaphore
 
-PFS_FBW=${SEM_FUT_BW}/pfs
-PFS_FSU=${SEM_FUT_SU}/pfs
+PFS_LIB=./pfs
+PFS=${PFS_LIB}/pfs
+#PFS_FBW=${SEM_FUT_BW}/pfs
+#PFS_FSU=${SEM_FUT_SU}/pfs
 
 LOG_LIB = ./Logger
 LOG=${LOG_LIB}/Logger
@@ -35,9 +37,9 @@ LOG=${LOG_LIB}/Logger
 #---------------------------------------------------------
 # compile and link 
 CPPFLAGS=-std=c++11 -fmax-errors=1  #-D LOGGING_MODE=false # compilation flags
-CPPINC_LIB=-I. -I${BQ_LIB} -I${CBQ_LIB} -I${SEM_LIB} -I${LOG_LIB} 
-CPPINC_FBW=-I. -I${BQ_LIB} -I${CBQ_LIB} -I${SEM_FUT_BW} -I${LOG_LIB} 
-CPPINC_FSU=-I. -I${BQ_LIB} -I${CBQ_LIB} -I${SEM_FUT_SU} -I${LOG_LIB} 
+CPPINC=-I. -I${BQ_LIB} -I${CBQ_LIB} -I${PFS} -I${LOG_LIB} 
+#CPPINC_FBW=-I. -I${BQ_LIB} -I${CBQ_LIB} -I${PFS} -I${SEM_FUT_BW} -I${LOG_LIB}
+#CPPINC_FSU=-I. -I${BQ_LIB} -I${CBQ_LIB} -I${PFS} -I${SEM_FUT_SU} -I${LOG_LIB} 
 LDFLAGS=-pthread            # linking flags
 #---------------------------------------------------------
 
@@ -45,30 +47,27 @@ all: ${EJEC}
 #---------------------------------------------------------
 # link and generate executable. 
 ${EJEC}: ${EJEC}.o ${SEM_L}.o ${SEM_FBW}.o ${SEM_FSU}.o ${LOG}.o ${PFS_FBW}.o ${PFS_FSU}.o
-	${CC} ${EJEC}.o ${SEM_L}.o ${LOG}.o -o main_lib ${CPPINC_LIB} ${CPPFLAGS} ${LDFLAGS}
-	${CC} ${EJEC}.o ${SEM_FBW}.o ${PFS_FBW}.o ${LOG}.o -o main_futex_busy_wait ${CPPINC_FBW} ${CPPFLAGS} ${LDFLAGS}
-	${CC} ${EJEC}.o ${SEM_FSU}.o ${PFS_FSU}.o ${LOG}.o -o main_futex_suspension ${CPPINC_FSU} ${CPPFLAGS} ${LDFLAGS}
+	${CC} ${EJEC}.o ${SEM_L}.o ${LOG}.o -o main_lib ${CPPINC} -I${SEM_LIB} ${CPPFLAGS} ${LDFLAGS}
+	${CC} ${EJEC}.o ${SEM_FBW}.o ${PFS}.o ${LOG}.o -o main_futex_busy_wait ${CPPINC} -I${SEM_FUT_BW} ${CPPFLAGS} ${LDFLAGS}
+	${CC} ${EJEC}.o ${SEM_FSU}.o ${PFS}.o ${LOG}.o -o main_futex_suspension ${CPPINC} -I${SEM_FUT_SU} ${CPPFLAGS} ${LDFLAGS}
 #---------------------------------------------------------
 ${EJEC}.o: ${EJEC}.cpp ${BQ}.hpp ${BQ}.cpp  ${CBQ}.hpp ${CBQ}.cpp
-	${CC} -c ${EJEC}.cpp -o ${EJEC}.o ${CPPINC_LIB} ${CPPFLAGS}
+	${CC} -c ${EJEC}.cpp -o ${EJEC}.o ${CPPINC} -I${SEM_LIB} ${CPPFLAGS}
 #---------------------------------------------------------
 ${SEM_L}.o: ${SEM_L}.cpp ${SEM_L}.hpp 
-	${CC} -c ${SEM_L}.cpp -o ${SEM_L}.o ${CPPINC_LIB} ${CPPFLAGS}
+	${CC} -c ${SEM_L}.cpp -o ${SEM_L}.o ${CPPINC} -I${SEM_LIB} ${CPPFLAGS}
 #---------------------------------------------------------
-${PFS_FBW}.o: ${PFS_FBW}.cpp ${PFS_FBW}.hpp 
-	${CC} -c ${PFS_FBW}.cpp -o ${PFS_FBW}.o ${CPPINC_FBW} ${CPPFLAGS}
+${PFS}.o: ${PFS}.cpp ${PFS}.hpp 
+	${CC} -c ${PFS}.cpp -o ${PFS}.o ${CPPINC} ${CPPFLAGS}
 #---------------------------------------------------------
 ${SEM_FBW}.o: ${SEM_FBW}.cpp ${SEM_FBW}.hpp 
-	${CC} -c ${SEM_FBW}.cpp -o ${SEM_FBW}.o ${CPPINC_FBW} ${CPPFLAGS}
-#---------------------------------------------------------
-${PFS_FSU}.o: ${PFS_FSU}.cpp ${PFS_FSU}.hpp 
-	${CC} -c ${PFS_FSU}.cpp -o ${PFS_FSU}.o ${CPPINC_FSU} ${CPPFLAGS}
+	${CC} -c ${SEM_FBW}.cpp -o ${SEM_FBW}.o ${CPPINC} -I${SEM_FBW} ${CPPFLAGS}
 #---------------------------------------------------------
 ${SEM_FSU}.o: ${SEM_FSU}.cpp ${SEM_FSU}.hpp 
-	${CC} -c ${SEM_FSU}.cpp -o ${SEM_FSU}.o ${CPPINC_FSU} ${CPPFLAGS}
+	${CC} -c ${SEM_FSU}.cpp -o ${SEM_FSU}.o ${CPPINC} -I${SEM_FSU} ${CPPFLAGS}
 #---------------------------------------------------------
 ${LOG}.o: ${LOG}.cpp ${LOG}.hpp 
-	${CC} -c ${LOG}.cpp -o ${LOG}.o ${CPPINC_LIB} ${CPPFLAGS}
+	${CC} -c ${LOG}.cpp -o ${LOG}.o ${CPPINC} ${CPPFLAGS}
 
 #---------------------------------------------------------
 # Cuidado con lo que se pone aquí, que se borra sin preguntar
