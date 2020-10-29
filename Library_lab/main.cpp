@@ -66,7 +66,7 @@ double trigFunc(double entrada) {
 int main(int argc, char* argv[]) {
     srand(5);
     if (argc != 5 || ((argv[3][0]!='s')&&(argv[3][0]!='n')&&(argv[3][0]!='K')) ) {
-        fprintf (stderr, "USO: ./main_p3_e1 TAM_COLA N_LECTORES mutex_type(s,n,K) max_rep\n");
+        fprintf (stderr, "USAGE: ./main TAM_COLA N_LECTORES mutex_type(s,n,K) max_rep\n");
         exit(1);
     }
     //argv[0] es nombre programa  
