@@ -19,13 +19,12 @@
 using namespace std;
 
 //-----------------------------------------------------
-//  Compilación condicional: ¿quiero hacer "logging"?
 #ifdef LOGGING_MODE
     #include <Logger.hpp>
     extern Logger logger;
-    #define ADD_EVENT(e) {logger.addMessage(e);}  //generar evento
+    #define ADD_EVENT(e) {logger.addMessage(e);}  
 #else
-    #define ADD_EVENT(e)  // nada
+    #define ADD_EVENT(e)  
 #endif
 //-----------------------------------------------------
 
@@ -52,26 +51,26 @@ public:
     //-----------------------------------------------------
     //Pre:  this->bq=< d_1 ... d_n >
     //Post: this->bq=< d_1 ... d_n d > 
-    //Coms: se bloquea hasta que haya un hueco para insertar el dato
+    //Coms: blocks until there is a free position to insert data
     void enqueue(int i);
 
     //-----------------------------------------------------
     //Pre:  this->bq=< d_1 ... d_n> and n>0
     //Post: this->bq=< d_2 ... d_n >
-    //Coms: se bloquea hasta que this->bq=< d_1 ... d_n> and n>0
+    //Coms: blocks until this->bq=< d_1 ... d_n> and n>0
     void dequeue();
 
     //-----------------------------------------------------
     //Pre:  this->bq=< d_1 ... d_n> and n>0
     //Post: f=d_1
-    //Coms: se bloquea hasta que this->bq=< d_1 ... d_n> and n>0
+    //Coms: blocks until this->bq=< d_1 ... d_n> and n>0
     void first(T &f);
 
     //-----------------------------------------------------
     //Pre:  this->bq=< d_1 ... d_n> and n>0
     //Post: f=d_1 and this->bq=< d_2 ... d_n>
-    //Coms: se bloquea hasta que this->bq=< d_1 ... d_n> and n>0
-    void firstR(T &f, bool &no_vacia, int * p_vector_comprobacion);
+    //Coms: blocks until que this->bq=< d_1 ... d_n> and n>0
+    void firstR(T &f, bool &not_empty, int * p_check_array);
 
     //-----------------------------------------------------
     //Pre:  this->bq=< d_1 ... d_n >
@@ -86,17 +85,15 @@ public:
     //-----------------------------------------------------
     //Pre:
     //Post:
-    //Com:  muestra la cola por la salida estándar, separando los elementos mediante comas
+    //Com:  dump queue elements to the standard output
     void print();
 
     
 private:
 	int N;
-	BoundedQueue<T> *bq;    //"BoundedQueue" con los datos
-    //estructura para traducir el diseño mediante <await ...>
-	Semaphore mutex;       //se deberá inicializar a 1 y pasarle (log,"mutex")
+	BoundedQueue<T> *bq;    
+	Semaphore mutex;       
 	void AVISAR();   
 };
-// Para poder trabajar con tipos genéricos, declaración y código deben estar juntos
 #include "ConcurrentBoundedQueue.cpp"
 #endif

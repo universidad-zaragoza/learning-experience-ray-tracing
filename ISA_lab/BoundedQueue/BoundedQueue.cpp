@@ -90,7 +90,6 @@ void BoundedQueue<T>::clone(BoundedQueue<T> &copy) {
     
     assert(N == copy.N);
 
-    // compañeros de la misma clase pueden acceder a elementos privados
     copy.nEl = nEl;
     copy.pri = pri;
     copy.sig = sig;

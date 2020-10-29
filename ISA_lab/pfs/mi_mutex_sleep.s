@@ -1,5 +1,3 @@
-//Ruben Gran
-
     .global mi_mutex_lock
 
 mi_mutex_lock:
