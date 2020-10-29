@@ -30,7 +30,7 @@ all: smallpt_thd smallpt_queue_mutex_def smallpt_queue_mutex_K smallpt_queue_mut
 smallpt_thd:
 	${CC} smallpt_thd.cpp -o smallpt_thd ${CPPFLAGS} ${LDFLAGS}
 smallpt_queue_mutex_def:
-	${CC} smallpt_queue.cpp ${LG}.cpp -o $@ ${CPPFLAGS} ${LDFLAGS}
+	${CC} smallpt_queue.cpp ${LG}.cpp ${SM}.cpp -o $@ ${CPPFLAGS} ${LDFLAGS}
 smallpt_queue_mutex_K: 
 	${CC} -DMUTEX=1 smallpt_queue.cpp ${SM}.cpp ${LG}.cpp -o $@ ${CPPFLAGS} ${LDFLAGS}
 smallpt_queue_mutex_s: 
