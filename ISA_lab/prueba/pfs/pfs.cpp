@@ -19,7 +19,6 @@
 #include <iostream>
 #include "pfs.hpp"
 
-extern "C" unsigned int mi_fetch_and_add(unsigned int *x, int add);
 extern "C" void mi_mutex_lock(int *x);
 extern "C" void mi_mutex_unlock(int *x);
 
@@ -40,7 +39,7 @@ void mutex::unlock()
     mi_mutex_unlock(&mi_mutex);
 }
 
-void mutex::setMutexType(char &c)
+void mutex::setMutexType(char c)
 {
     type = c;
 }

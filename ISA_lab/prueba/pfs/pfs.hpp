@@ -19,7 +19,7 @@ class mutex
   ~mutex();
     void lock();
     void unlock();
-    void setMutexType(char &c);
+    void setMutexType(char c ='n');
   private:
   //friend class Lock;
 };
