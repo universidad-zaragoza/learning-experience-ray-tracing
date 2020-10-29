@@ -61,7 +61,7 @@ public:
     //-----------------------------------------------------
     //Pre:
     //Post:
-    //Com:  muestra la cola por la salida estándar, separando los elementos mediante comas, y salta de línea
+    //Com:  dumps the elements of the queue to the standard output
     void print();
     //-----------------------------------------------------
     //Pre:
@@ -75,6 +75,5 @@ private:
     T *data;
     int pri, sig;
 };
-// Para poder trabajar con tipos genéricos, declaración y código deben estar juntos
 #include "BoundedQueue.cpp"
 #endif

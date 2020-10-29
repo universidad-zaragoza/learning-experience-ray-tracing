@@ -9,9 +9,6 @@
 //                See Semaphore.hpp
 //*--------------------------------------------------------------------------------------*/
 
-//Infoŕmación útil para entender la implementación en
-//http://en.cppreference.com/w/cpp/thread/condition_variable
-//La estudiaremos con más detalle cuando tratemos en la asignatura la parte de "monitores"
 
 #include <Semaphore.hpp>
 
@@ -29,17 +26,17 @@ Semaphore::Semaphore() {
 }
 //----------------------------------------------------------
 Semaphore::~Semaphore() {
-    //nada que hacer
+    //nothing to do
 
 }
 //----------------------------------------------------------
-void Semaphore::adormir(int ve){
-//	suspende la ejecución del hilo si el valor de ve no coincide con el de count
+void Semaphore::to_sleep(int ve){
+//	suspends execution if ve does not match with count
 	syscall(__NR_futex, &(count), FUTEX_WAIT, ve, NULL, 0, 0);
 }
 //----------------------------------------------------------
-void Semaphore::despertar(){
-// despierta a todos los hilos para los que fue suspendida su ejecución hasta el momento
+void Semaphore::wakeup(){
+// wake up all suspended threads
 	syscall(__NR_futex, &(count), FUTEX_WAKE, INT_MAX, NULL, 0, 0);
 }
 //----------------------------------------------------------
@@ -64,7 +61,7 @@ void Semaphore::signal() {
 
     count++;
 	
-	despertar();
+	wakeup();
 
 	mtx.unlock();
 }
@@ -78,7 +75,7 @@ void Semaphore::wait() {
     while(count == 0) {
 		int vr = count;		
 		mtx.unlock();
-		adormir(vr);
+		to_sleep(vr);
 		mtx.lock();
     }
     count--;
@@ -106,7 +103,7 @@ void Semaphore::wait(int n) {
     while(count < n) {
 		int vr = count; 
 		mtx.unlock();
-		adormir(vr);
+		to_sleep(vr);
 		mtx.lock();
     }
     count = count-n;

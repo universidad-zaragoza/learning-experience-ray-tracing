@@ -71,7 +71,7 @@ public:
     //Pre:  this->bq=< d_1 ... d_n> and n>0
     //Post: f=d_1 and this->bq=< d_2 ... d_n>
     //Coms: se bloquea hasta que this->bq=< d_1 ... d_n> and n>0
-    void firstR(T &f, bool &no_vacia, int * p_vector_comprobacion);
+    void firstR(T &f, bool &not_empty, int * p_check_array);
 
     //-----------------------------------------------------
     //Pre:  this->bq=< d_1 ... d_n >

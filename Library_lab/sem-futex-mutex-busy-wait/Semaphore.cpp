@@ -9,9 +9,6 @@
 //                See Semaphore.hpp
 //*--------------------------------------------------------------------------------------*/
 
-//Infoŕmación útil para entender la implementación en
-//http://en.cppreference.com/w/cpp/thread/condition_variable
-//La estudiaremos con más detalle cuando tratemos en la asignatura la parte de "monitores"
 
 //"The condition_variable class is a synchronization primitive that can be used to block a thread,
 //or multiple threads at the same time, until:
@@ -42,7 +39,7 @@ Semaphore::Semaphore() {
 }
 //----------------------------------------------------------
 Semaphore::~Semaphore() {
-    //nada que hacer
+    //nothig to do
 
 }
 //----------------------------------------------------------

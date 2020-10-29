@@ -29,17 +29,15 @@
 
 class Semaphore {
 private:
-//	mipthread_mutex_t mi_mutex;
-//    char MUTEX_IMPLE = 's';   // Seleccion de implmetaciÃ³n de mutex con futex: s, spinlock; n, naive; y K, Kdrepper 
-    std::mutex mtx;          //los dos primeros atributos se entenderán más adelante
+    std::mutex mtx;          
     std::condition_variable_any cv;
-    int count;                    //natural asociado al semáforo  
-    bool initialized;             //para manejar dos constructores distintos
-    int print = 1; // imprimir una vez el tipo de mutex para asegurarme de que uso el correcto
+    int count;                    
+    bool initialized;             
+    int print = 1; 
 
 
 public:
-	//------------------------- constructores
+	//------------------------- constructors
     //Pre:
     //Post: NOT initialized
     Semaphore();
@@ -49,14 +47,11 @@ public:
     Semaphore(int n);
 
     //------------------------- destructor
-    //se invoca automáticamente al cerrar el bloque
-    //en que se declara el objeto
     ~Semaphore();
 
     //Pre: n>=0 AND NOT initialized
     //Post: initialized AND count=n
     void setInitValue(int n, char c='m');
-    //------------------------- operaciones estándar
     //Pre: initialized
     //Post: <count++>
     void signal();
@@ -67,7 +62,6 @@ public:
     //      >
     void wait();
 
-    //------------------------- operaciones extendidas
     //Pre: n>0 AND initialized
     //Post: <count=count+n>
     void signal(int n);

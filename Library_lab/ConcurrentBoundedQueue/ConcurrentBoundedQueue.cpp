@@ -36,20 +36,20 @@ void ConcurrentBoundedQueue<T>::enqueue(int i) {
 }
 
 template <class T>
-void ConcurrentBoundedQueue<T>::firstR(T &f, bool &no_vacia, int * p_vector_comprobacion) {
+void ConcurrentBoundedQueue<T>::firstR(T &f, bool &not_empty, int * p_check_array) {
 
     mutex.wait();
     ADD_EVENT("firstR,BEGIN_FUNC_PROC,"+to_string(bq->length()));
     if ((bq->length() == 0)) {
-        if (no_vacia == true) {
-            no_vacia = false;
+        if (not_empty == true) {
+            not_empty = false;
         }
         mutex.signal();
         //std::this_thread::~thread();
     }
     else {
         f = bq->first();
-        p_vector_comprobacion[f]++;
+        p_check_array[f]++;
         bq->dequeue();
         ADD_EVENT("firstR,END_FUNC_PROC,"+to_string(bq->length()));
         AVISAR();

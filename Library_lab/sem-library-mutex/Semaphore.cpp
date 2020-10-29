@@ -9,10 +9,6 @@
 //                See Semaphore.hpp
 //*--------------------------------------------------------------------------------------*/
 
-//Infoŕmación útil para entender la implementación en
-//http://en.cppreference.com/w/cpp/thread/condition_variable
-//La estudiaremos con más detalle cuando tratemos en la asignatura la parte de "monitores"
-
 //"The condition_variable class is a synchronization primitive that can be used to block a thread,
 //or multiple threads at the same time, until:
 //a notification is received from another thread
@@ -26,19 +22,19 @@
 
 
 #include <Semaphore.hpp>
-#include <iostream> //añadido para cout
+#include <iostream> 
 
 
 //----------------------------------------------------------
 Semaphore::Semaphore(int n) {
-    assert(n >= 0);           //aborta si se viola la Pre
+    assert(n >= 0);           
     count = n;
-    initialized = true;       //ya está inicializad
+    initialized = true;       
 	
 }
 //----------------------------------------------------------
 Semaphore::Semaphore() {
-    initialized = false;      //habrá que inicializarlo
+    initialized = false;      
 }
 //----------------------------------------------------------
 Semaphore::~Semaphore() {
@@ -53,7 +49,7 @@ void Semaphore::setInitValue(int n, char c) {
         print = 0;
     }
 
-    std::unique_lock<std::mutex> lck(mtx); //std::mutex para atomicidad de la función
+    std::unique_lock<std::mutex> lck(mtx); 
 
     assert(!initialized && n >= 0);
 
@@ -70,7 +66,7 @@ void Semaphore::signal() {
     assert(initialized);
 
     count++;
-    cv.notify_all(); //podemos cambiar la semántica con cv.notify_one()
+    cv.notify_all(); 
     //std::cout << "signal master \n";
 
 }
@@ -93,7 +89,7 @@ void Semaphore::signal(int n) {
     assert(initialized && n>0);
 
     count = count+n;
-    cv.notify_all(); //podemos cambiar la semántica con cv.notify_one()
+    cv.notify_all(); 
 
 }
 //----------------------------------------------------------

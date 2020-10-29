@@ -34,13 +34,13 @@
 class Semaphore {
 private:
     mutex mtx;          
-    int count;                    //natural asociado al semáforo  
-    bool initialized;             //para manejar dos constructores distintos
+    int count;                      
+    bool initialized;             
 
-    void adormir (int ve);          //dormira si ve es igual a count
-    void despertar ();
+    void to_sleep (int ve);          
+    void wakeup ();
 public:
-    //------------------------- constructores
+    //------------------------- contructors
     //Pre:
     //Post: NOT initialized
     Semaphore();
@@ -50,14 +50,11 @@ public:
     Semaphore(int n);
 
     //------------------------- destructor
-    //se invoca automáticamente al cerrar el bloque
-    //en que se declara el objeto
     ~Semaphore();
 
     //Pre: n>=0 AND NOT initialized
     //Post: initialized AND count=n
     void setInitValue(int n, char c='m');
-    //------------------------- operaciones estándar
     //Pre: initialized
     //Post: <count++>
     void signal();
@@ -68,7 +65,6 @@ public:
     //      >
     void wait();
 
-    //------------------------- operaciones extendidas
     //Pre: n>0 AND initialized
     //Post: <count=count+n>
     void signal(int n);
