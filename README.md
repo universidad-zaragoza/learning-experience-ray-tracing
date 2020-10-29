@@ -64,7 +64,15 @@ $prompt> ./main QUEUE_SIZE N_READERS max_rep
 * N\_READERS: number of concurrent reader threads to the queue
 * max\_rep(>=0): number of times that the entire experiment is repeated
 
-
 ## Application lab
+This folder contains the complete implementation for a ray-tracer application that relies on the implementation of the previous labs in order to distribute the rendering work among threads. Work distribution is centralized in Concurrent Bounded Queue. A master thread split the render work into pieces that introduces in the queue. Later, a set of worker threads extract this work packages to proceed with the parallel rendering of the scene. 
 
+In order to compile the application, it should be run the 'Makefile' that can be found at path './Application_lab/smallpt/MAkefile'. As a result, there are produced several versions of parallel ray-tracer which differ in the underlying implementation of the *mutex* and *semaphore* objects that enforce the correction at the critical sections of the parallel algorithm. 
+
+* 'smallpt_queue_mutex_def': the default implementation that relies on <std::mutex> of the C++ standard library.
+* 'smallpt_queue_mutex_K': an implementation based on futex system call based on Ulrich Drepper algorithm.
+* 'smallpt_queue_mutex_n': an implementation based on futex system call that suspends threads in case of a contention scenario.
+* 'smallpt_queue_mutex_s': an implementation based on futex system call that relies in a spin-lock approach.
+* 'smallpt_queue_mutex_asm': in this implementation, synchronization primitives has been coded in assembly code (ARMv8).
+* 'smallpt_queue_mutex_asm_sleep': an improvemente of the previous implementation that hints the core to step to a low-power state in case of contention.
 
