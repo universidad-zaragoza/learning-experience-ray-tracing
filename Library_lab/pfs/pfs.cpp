@@ -44,7 +44,7 @@ void mutex::lock()
     }
     	break;
 
-    case 'n':
+    case 'b':
     {
 	while (__atomic_test_and_set ( &interlock, __ATOMIC_SEQ_CST)){
              syscall(__NR_futex, &interlock, FUTEX_WAIT, 1, NULL, 0, 0);
@@ -52,7 +52,7 @@ void mutex::lock()
     }
         break;
 
-    case 'K':
+    case 'd':
     {
 	int c = 0;
 
@@ -74,7 +74,7 @@ void mutex::lock()
         break;
     default:
         {
-        //std::cout << "default case"<< std::endl;
+        	std::cout << "default case"<< std::endl;
         }
     }
     
@@ -86,13 +86,13 @@ void mutex::unlock()
       case's':
 	interlock = 0;
     	break;
-    case 'n':
+    case 'b':
 	interlock = 0;
 	
 	syscall(__NR_futex, &interlock, FUTEX_WAKE, 1, NULL, 0, 0);
 
         break;
-    case 'K':
+    case 'd':
   
 	if (__atomic_fetch_sub( &interlock, 1, __ATOMIC_SEQ_CST) != 1) {
 		// There are waiters, wake one
@@ -104,7 +104,7 @@ void mutex::unlock()
 
         break;
     default:
-	//std::cout << "caso por defecto" << std::endl;
+		std::cout << "default case"<< std::endl;
     break;
 
     }

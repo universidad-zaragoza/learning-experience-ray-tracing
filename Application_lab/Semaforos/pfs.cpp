@@ -2,7 +2,7 @@
 // Name: practica_futex.c								*/
 // Author: Alejandro Valero y Ruben Gran 
 // Copyright: Universidad de Zaragoza
-// Date: 12/12/2018
+// Date: 28/10/2020
 // Description: Mutex implementation and performance assesment
 /*--------------------------------------------------------------------------------------*/
 
@@ -38,7 +38,7 @@ void mutex::lock()
     }
     	break;
 
-    case 'n':
+    case 'b':
     {
 	while (__atomic_test_and_set ( &interlock, __ATOMIC_SEQ_CST)){
              syscall(__NR_futex, &interlock, FUTEX_WAIT, 1, NULL, 0, 0);
@@ -46,7 +46,7 @@ void mutex::lock()
     }
         break;
 
-    case 'K':
+    case 'd':
     {
 	int c = 0;
 
@@ -80,13 +80,13 @@ void mutex::unlock()
       case's':
 	interlock = 0;
     	break;
-    case 'n':
+    case 'b':
 	interlock = 0;
 	
 	syscall(__NR_futex, &interlock, FUTEX_WAKE, 1, NULL, 0, 0);
 
         break;
-    case 'K':
+    case 'd':
   
 	if (__atomic_fetch_sub( &interlock, 1, __ATOMIC_SEQ_CST) != 1) {
 		// There are waiters, wake one
@@ -104,142 +104,3 @@ void mutex::unlock()
     }
 
 }
-
-/*    case 's':
-	interlock = 0;
-    	break;
-    case 'n':
-	interlock = 0;
-	
-	syscall(__NR_futex, &interlock, FUTEX_WAKE, 1, NULL, 0, 0);
-
-        break;
-
-    case 'K':
-  
-	if (__atomic_fetch_sub( &interlock, 1, __ATOMIC_SEQ_CST) != 1) {
-		// There are waiters, wake one
-
-		interlock = 0;
-	
-		syscall(__NR_futex, (int *) &interlock, FUTEX_WAKE, 1, NULL, 0, 0);
-	}
-
-        break;
-    default:
-*/
-
-
-/*
-int mipthread_spin_init		(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_spin_destroy	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_spin_lock		(mipthread_mutex_t *lock){
-
-	while (__atomic_test_and_set ( lock, __ATOMIC_SEQ_CST));	
-    	return 0;
-
-}
-
-int mipthread_spin_unlock	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_naive_init	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_naive_destroy	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_naive_lock	(mipthread_mutex_t *lock){
-
-	while (__atomic_test_and_set ( lock, __ATOMIC_SEQ_CST)){
-
-        	syscall(__NR_futex, lock, FUTEX_WAIT, 1, NULL, 0, 0);
-
-	}
-    	return 0;
-
-}
-
-int mipthread_naive_unlock	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-	
-	syscall(__NR_futex, lock, FUTEX_WAKE, 1, NULL, 0, 0);
-    	return 0;
-
-}
-
-int mipthread_Kdrepper_init	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_Kdrepper_destroy	(mipthread_mutex_t *lock){
-
-	*lock = 0;
-    	return 0;
-
-}
-
-int mipthread_Kdrepper_lock(mipthread_mutex_t *lock){
-    int c = 0;
-
-
-    __atomic_compare_exchange_n( lock, &c, 1, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
-
-    if (c == 0) return 0; // No contention
-
-    if (c != 2) { // Assign 2 if it was 1 before
-        c = __atomic_exchange_n( lock, 2, __ATOMIC_SEQ_CST);
-    }
-
-    while (c != 0) { // Wait until is unlocked
-        if ( -1 == syscall(__NR_futex, lock, FUTEX_WAIT, 2, NULL, 0, 0)){
-//	   perror("lock");
-        }
-        c = __atomic_exchange_n( lock, 2, __ATOMIC_SEQ_CST);
-    }
-	
-    return 0;
-
-}
-
-int mipthread_Kdrepper_unlock	(mipthread_mutex_t *lock){
-
-	if (__atomic_fetch_sub( lock, 1, __ATOMIC_SEQ_CST) != 1) {
-		// There are waiters, wake one
-
-		*lock = 0;
-	
-		syscall(__NR_futex, (int *)lock, FUTEX_WAKE, 1, NULL, 0, 0);
-	}
-
-}
-
-*/

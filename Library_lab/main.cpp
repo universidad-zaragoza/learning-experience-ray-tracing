@@ -6,7 +6,7 @@
 // Date:         28/10/2020
 // Description:  A Learning Experience Toward the Understanding of Abstraction-Level 
 //               Interactions in Parallel Applications.
-// 		         Library lab.
+// 		  Library lab.
 //*--------------------------------------------------------------------------------------*/
  
 #include <iostream>
@@ -14,7 +14,6 @@
 #include <string>
 #include "ConcurrentBoundedQueue.hpp"
 
-// imprimir double con máxima precisión
 #include <iomanip>
 #include <cmath>
 #include <limits>
@@ -25,17 +24,17 @@
 
 using namespace std;
 //-----------------------------------------------------
-//  Compilación condicional: ¿quiero hacer "logging"?
+//  Conditional compiling: do I want to do logging?
 #ifdef LOGGING_MODE
     #include <Logger.hpp>
     Logger logger("_log_.log");
-    // Logger logger("_log_.log, clog"); // si queremos echo de eventos en stdout
-    #define ADD_EVENT(e) {logger.addMessage(e);} //generar evento
+    // Logger logger("_log_.log, clog");
+    #define ADD_EVENT(e) {logger.addMessage(e);}
 #else
-    #define ADD_EVENT(e)   // nada
+    #define ADD_EVENT(e)
 #endif
 //-----------------------------------------------------   
-double trigFunc(double entrada);
+double trigFunc(double input);
 
 template <class T>
 void insertar(ConcurrentBoundedQueue<T> &cbq, int TAM_COLA){
@@ -61,23 +60,22 @@ void extraer(ConcurrentBoundedQueue<T> &cbq, bool &no_vacia, int * p_vector_comp
     }
 }
 
-double trigFunc(double entrada) {
-    return sin(entrada*786.12);
+double trigFunc(double input) {
+    return sin(input*786.12);
 }
 
 int main(int argc, char* argv[]) {
     srand(5);
-    if (argc != 5 || ((argv[3][0]!='s')&&(argv[3][0]!='n')&&(argv[3][0]!='K')) ) {
-        fprintf (stderr, "USAGE: ./main QUEUE_SIZE N_READERS mutex_type(s,n,K) max_rep\n");
+    if (argc != 5 || ((argv[3][0]!='s')&&(argv[3][0]!='b')&&(argv[3][0]!='d')) ) {
+        fprintf (stderr, "USAGE: ./main QUEUE_SIZE N_READERS mutex_type(s,b,d) max_rep\n");
         exit(1);
     }
-    //argv[0] es nombre programa  
+
     int TAM_COLA = atoi(argv[1]); 
     int N_LECTORES = atoi(argv[2]);
     char mutex_type = argv[3][0];
     int max_rep = atoi(argv[4]);
 
-    // variables compartidas
     ConcurrentBoundedQueue<int> cbq(TAM_COLA, mutex_type);
     bool no_vacia = true;
     int vector_comprobacion[TAM_COLA] ;
@@ -85,7 +83,6 @@ int main(int argc, char* argv[]) {
     double v_trig[N_LECTORES] ; 
     double * p_v_trig = v_trig;
 
-    // variables tiempo
     struct timespec tdormir;
     struct timeval start, end;
     tdormir.tv_sec = 0;
@@ -125,16 +122,12 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // EXPORTAR RESULTADOS
     if (error == true) {
-        fprintf(stdout, "%c\t%d\t%lf\t%d\t%d ERROR\n", mutex_type, N_LECTORES, milisF, TAM_COLA, max_rep);
-        fprintf(stderr, "ERROR \n");
+        fprintf(stderr, "%c\t%d\t%lf\t%d\t%d ERROR\n", mutex_type, N_LECTORES, milisF, TAM_COLA, max_rep);
     }
     else {
         fprintf(stdout, "%c\t%d\t%lf\t%d\t%d\n", mutex_type, N_LECTORES, milisF, TAM_COLA, max_rep);
 
-        // Para que el compilador lo vea como info útil
-        fprintf(stderr, "TODO PERFECTO \t");
         for (int i=0; i<N_LECTORES; i++) {
             fprintf(stderr, "%f\t", v_trig[i]);
         }

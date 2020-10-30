@@ -35,7 +35,7 @@ using namespace std;
     #define ADD_EVENT(e)   // nada
 #endif
 //-----------------------------------------------------   
-double trigFunc(double entrada);
+double trigFunc(double input);
 
 template <class T>
 void insertar(ConcurrentBoundedQueue<T> &cbq, int TAM_COLA){
@@ -61,8 +61,8 @@ void extraer(ConcurrentBoundedQueue<T> &cbq, bool &no_vacia, int * p_vector_comp
     }
 }
 
-double trigFunc(double entrada) {
-    return sin(entrada*786.12);
+double trigFunc(double input) {
+    return sin(input*786.12);
 }
 
 int main(int argc, char* argv[]) {
@@ -126,14 +126,11 @@ int main(int argc, char* argv[]) {
 
     // EXPORTAR RESULTADOS
     if (error == true) {
-        fprintf(stdout, "%d\t%lf\t%d\t%d ERROR\n", N_LECTORES, milisF, TAM_COLA, max_rep);
-        fprintf(stderr, "ERROR \n");
+        fprintf(stderr, "%d\t%lf\t%d\t%d ERROR\n", N_LECTORES, milisF, TAM_COLA, max_rep);
     }
     else {
         fprintf(stdout, "%d\t%lf\t%d\t%d\n", N_LECTORES, milisF, TAM_COLA, max_rep);
 
-        // Para que el compilador lo vea como info útil
-        fprintf(stderr, "TODO PERFECTO \t");
         for (int i=0; i<N_LECTORES; i++) {
             fprintf(stderr, "%f\t", v_trig[i]);
         }

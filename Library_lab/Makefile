@@ -1,6 +1,6 @@
 #*****************************************************************
 # File:   Makefile
-# Author: PSCD-Unizar
+# Author: Ruben Gran-Tejero
 # Date:   October 2020
 # Copyright: Universidad de Zaragoza
 # Coms:   A Learning Experience Toward the Understanding of Abstraction-Level Interactions in Parallel Applications.    
@@ -70,6 +70,6 @@ ${LOG}.o: ${LOG}.cpp ${LOG}.hpp
 	${CC} -c ${LOG}.cpp -o ${LOG}.o ${CPPINC} ${CPPFLAGS}
 
 #---------------------------------------------------------
-# Cuidado con lo que se pone aquí, que se borra sin preguntar
+
 clean:
 	$(RM) ${EJEC}.o ${LOG}.o ${SEM_L}.o ${SEM_FBW}.o ${SEM_FSU}.o ${PFS_FSU}.o ${PFS_FBW}.o main_lib main_futex_busy_wait main_futex_suspension

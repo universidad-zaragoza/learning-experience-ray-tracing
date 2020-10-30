@@ -16,7 +16,7 @@ class mutex
 {
   private:
     volatile char interlock;
-    char type = 'n';
+    char type = 's';
     int print = 1;
   public:
 	mutex();

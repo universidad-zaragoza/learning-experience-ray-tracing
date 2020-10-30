@@ -12,7 +12,7 @@ class my_mutex
     volatile char _interlock;
     char _type;
   public:
-    my_mutex(char type = 'K') : _type(type), _interlock(0) {} ;
+    my_mutex(char type = 'd') : _type(type), _interlock(0) {} ;
     ~my_mutex() {};
 
     void lock() {
@@ -24,7 +24,7 @@ class my_mutex
                 }
                 break;
 
-            case 'n':
+            case 'b':
                 {
                     while (__atomic_test_and_set ( &_interlock, __ATOMIC_SEQ_CST)){
                         syscall(__NR_futex, &_interlock, FUTEX_WAIT, 1, NULL, 0, 0);
@@ -32,7 +32,7 @@ class my_mutex
                 }
                 break;
 
-            case 'K':
+            case 'd':
                 {
                     int c = 0;
 
@@ -65,13 +65,13 @@ class my_mutex
       case's':
 	_interlock = 0;
     	break;
-    case 'n':
+    case 'b':
 	_interlock = 0;
 
 	syscall(__NR_futex, &_interlock, FUTEX_WAKE, 1, NULL, 0, 0);
 
         break;
-    case 'K':
+    case 'd':
 
 	if (__atomic_fetch_sub( &_interlock, 1, __ATOMIC_SEQ_CST) != 1) {
 		// There are waiters, wake one
@@ -83,7 +83,7 @@ class my_mutex
 
         break;
     default:
-	std::cout << "caso por defecto" << std::endl;
+	std::cout << "default case"<< std::endl;
 
 
     }

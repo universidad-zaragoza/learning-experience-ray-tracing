@@ -12,14 +12,14 @@
 class mutex
 {
   private:
-    char type = 'n'; //s, n, K
+    char type = 's'; //s, b, d
     int mi_mutex=0; 
   public:
   mutex();
   ~mutex();
     void lock();
     void unlock();
-    void setMutexType(char c ='n');
+    void setMutexType(char c ='s');
   private:
   //friend class Lock;
 };

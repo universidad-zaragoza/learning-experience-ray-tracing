@@ -1,6 +1,6 @@
 #*****************************************************************
 # File:   Makefile
-# Author: PSCD-Unizar
+# Author: Ruben Gran
 # Date:   October 2020
 # Copyright: Universidad de Zaragoza
 # Coms:   A Learning Experience Toward the Understanding of Abstraction-Level Interactions in Parallel Applications.    

@@ -27,8 +27,7 @@
 
 class Semaphore {
 private:
-//	mipthread_mutex_t mi_mutex;
-//    char MUTEX_IMPLE = 's';   // Seleccion de implmetaciÃ³n de mutex con futex: s, spinlock; n, naive; y K, Kdrepper 
+
     mutex mtx;          //los dos primeros atributos se entenderán más adelante
     std::condition_variable_any cv;
     int count;                    //natural asociado al semáforo  

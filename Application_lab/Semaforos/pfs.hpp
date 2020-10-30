@@ -2,7 +2,7 @@
 // Name: practica_futex.c								*/
 // Author: Alejandro Valero y Ruben Gran 
 // Copyright: Universidad de Zaragoza
-// Date: 12/12/2018
+// Date: 28/10/2020
 // Description: Mutex implementation and performance assesment
 /*--------------------------------------------------------------------------------------*/
 
@@ -12,7 +12,7 @@ class mutex
 {
   private:
     volatile char interlock;
-    char type = 'K';
+    char type = 's';
   public:
 	mutex();
 	~mutex();
