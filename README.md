@@ -77,7 +77,7 @@ $prompt> ./main QUEUE_SIZE N_READERS max_rep
 
 This folder contains the complete implementation of a ray tracer application that relies on the implementation of the previous labs in order to distribute the rendering process among threads. Work distribution is centralized in a Concurrent Bounded Queue. A main thread splits the render work into pieces that are enqueued in the queue. On the other hand, a set of worker threads dequeue the pieces of work and proceed with the parallel rendering of the scene. 
 
-In order to compile the application, it should be run the 'Makefile' that can be found at path './Application_lab/smallpt/MAkefile'. As a result, there are produced several versions of parallel a ray tracer which differ in the underlying implementation of the *mutex* and *semaphore* objects that enforce the correction at the critical sections of the parallel algorithm. 
+In order to compile the application, it should be run the 'Makefile' that can be found at path './Application_lab/smallpt/Makefile'. As a result, there are produced several versions of parallel a ray tracer which differ in the underlying implementation of the *mutex* and *semaphore* objects that enforce the correction at the critical sections of the parallel algorithm. 
 
 * 'smallpt_queue_mutex_def': the default implementation that relies on <std::mutex> of the C++ standard library.
 * 'smallpt_queue_mutex_K': an implementation based on futex system call based on Ulrich Drepper's algorithm.
