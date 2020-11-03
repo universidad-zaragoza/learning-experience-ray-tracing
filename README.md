@@ -75,13 +75,19 @@ $prompt> ./main QUEUE_SIZE N_READERS max_rep
 
 ## Application lab
 
-This folder contains the complete implementation of a ray tracer application that relies on the implementation of the previous labs in order to distribute the rendering process among threads. Work distribution is centralized in a Concurrent Bounded Queue. A main thread splits the render work into pieces that are enqueued in the queue. On the other hand, a set of worker threads dequeue the pieces of work and proceed with the parallel rendering of the scene. 
+This folder contains the complete implementation of a ray tracer application (smallpt by Kevin Beason) that relies on the implementation of the previous labs in order to distribute the rendering process among threads. Work distribution is centralized in a Concurrent Bounded Queue. A main thread splits the render work into pieces that are enqueued in the queue. On the other hand, a set of worker threads dequeue the pieces of work and proceed with the parallel rendering of the scene. 
 
 In order to compile the application, it should be run the 'Makefile' that can be found at path './Application_lab/smallpt/Makefile'. As a result, there are produced several versions of parallel a ray tracer which differ in the underlying implementation of the *mutex* and *semaphore* objects that enforce the correction at the critical sections of the parallel algorithm. 
 
 * 'smallpt_queue_mutex_def': the default implementation that relies on <std::mutex> of the C++ standard library.
-* 'smallpt_queue_mutex_K': an implementation based on futex system call based on Ulrich Drepper's algorithm.
-* 'smallpt_queue_mutex_n': an implementation based on futex system call that suspends threads in case of a contention scenario (referred to as basic in previous labs).
+* 'smallpt_queue_mutex_d': an implementation based on futex system call based on Ulrich Drepper's algorithm.
+* 'smallpt_queue_mutex_b': an implementation based on futex system call that suspends threads in case of a contention scenario.
 * 'smallpt_queue_mutex_s': an implementation that relies in a spin-lock approach.
 * 'smallpt_queue_mutex_asm': in this implementation, synchronization primitives have been coded in assembly (ARMv8).
 * 'smallpt_queue_mutex_asm_sleep': an improvement of the previous implementation that hints the core to step to a low-power state in case of contention.
+
+The following is an example command line to run the ray tracer using mutexes based on Ulrich Drepper's algorithm:
+
+```
+$prompt> ./smallpt_queue_mutex_d -scene forest -threads 10 -samples 10 -width 300 -height 300 -divisions 20 -output fout
+```
