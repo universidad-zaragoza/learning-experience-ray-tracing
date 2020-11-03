@@ -63,7 +63,7 @@ The folder contains a 'Makefile' and the source code 'main.c'. In order to compi
 $prompt> make 
 ```
 
-After the execution of the 'make' command there are provided two different executables meant to benchmark the implementation of a Concurrent Bounded Queue with the two types of underlying mutex implementations: 'main\_isa\_mtx' and 'main\_isa\_mtx\_sleep'. The former corresponds to a basic mutex implementation and the latter to an extension to hint a low-power state for cores under a contention scenario.  
+After the execution of the 'make' command there are provided two different executables meant to benchmark the implementation of a Concurrent Bounded Queue with the two types of underlying mutex implementations: 'main\_isa\_mtx' and 'main\_isa\_mtx\_sleep'. The former corresponds to a basic mutex implementation and the latter to an extension to hint a low-power state for cores under a contention scenario. Please note that for the assembly code to be compiled it is required to run make under an ARMv8 ISA.
 
 ```
 $prompt> ./main QUEUE_SIZE N_READERS max_rep
@@ -80,8 +80,8 @@ This folder contains the complete implementation of a ray tracer application tha
 In order to compile the application, it should be run the 'Makefile' that can be found at path './Application_lab/smallpt/MAkefile'. As a result, there are produced several versions of parallel a ray tracer which differ in the underlying implementation of the *mutex* and *semaphore* objects that enforce the correction at the critical sections of the parallel algorithm. 
 
 * 'smallpt_queue_mutex_def': the default implementation that relies on <std::mutex> of the C++ standard library.
-* 'smallpt_queue_mutex_d': an implementation based on futex system call based on Ulrich Drepper's algorithm.
-* 'smallpt_queue_mutex_b': an implementation based on futex system call that suspends threads in case of a contention scenario.
+* 'smallpt_queue_mutex_K': an implementation based on futex system call based on Ulrich Drepper's algorithm.
+* 'smallpt_queue_mutex_n': an implementation based on futex system call that suspends threads in case of a contention scenario (referred to as basic in previous labs).
 * 'smallpt_queue_mutex_s': an implementation that relies in a spin-lock approach.
-* 'smallpt_queue_mutex_asm': in this implementation, synchronization primitives havw been coded in assembly (ARMv8).
+* 'smallpt_queue_mutex_asm': in this implementation, synchronization primitives have been coded in assembly (ARMv8).
 * 'smallpt_queue_mutex_asm_sleep': an improvement of the previous implementation that hints the core to step to a low-power state in case of contention.
