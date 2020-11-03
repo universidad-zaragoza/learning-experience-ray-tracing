@@ -18,7 +18,7 @@
 #ifndef SEMAPHORE_V4_HPP
 #define SEMAPHORE_V4_HPP
 
-// FIXME chapuza
+// FIXME
 #if (MUTEX > 0 ) && (MUTEX < 4)  // library
     #include "my_mutex.hpp"
 #elif (MUTEX >= 4) && (MUTEX < 6) // assembly
@@ -46,16 +46,16 @@ using namespace std; //mutex, condition_variable, etc.
 class Semaphore {
 private:
 #if MUTEX == 1
-    #warning "Using K mutex"
-    my_mutex mtx{'K'};
+    #warning "Using d mutex"
+    my_mutex mtx{'d'};
     using mutex_type = my_mutex;
 #elif MUTEX == 2
     #warning "Using s mutex"
     my_mutex mtx{'s'};
     using mutex_type = my_mutex;
 #elif MUTEX == 3
-    #warning "Using n mutex"
-    my_mutex mtx{'n'};
+    #warning "Using b mutex"
+    my_mutex mtx{'b'};
     using mutex_type = my_mutex;
 #elif MUTEX == 4
     #warning "Using asm mutex"
