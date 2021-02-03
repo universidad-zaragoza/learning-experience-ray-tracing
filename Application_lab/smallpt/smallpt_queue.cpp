@@ -450,16 +450,29 @@ int main(int argc, char *argv[]){
     std::vector<std::thread> threads;
     ConcurrentBoundedQueue<Task> tasks(divisions*divisions + num_threads);
     auto start = std::chrono::steady_clock::now();
-    // Launch a group of threads
+    
+	for (int i = 0; i < divisions; ++i) {
+        for (int j = 0; j < divisions; ++j) {
+
+            int x0, x1, y0, y1;
+			x0 =(i*w)/divisions;
+			x1=std::min(((i+1)*w)/divisions,w);
+            y0=(j*h)/divisions;
+			y1=std::min(((j+1)*h)/divisions,h);
+
+			std::cout << "x0: " << x0 << ", x1:" << x1 << ", y0:" << y0 << " y1:" << y1 << std::endl; 
+			tasks.enqueue(Task(x0, x1, y0, y1, samps));
+		}
+	}
+    
+	for (int i = 0; i < num_threads; ++i) tasks.enqueue(Task()); //These are ending tasks
+    
+	// Launch a group of threads
     for (int i = 0; i < num_threads; ++i) {
         threads.push_back(std::thread([&] () { render(tasks,w,h,cam,cx,cy,r,c); }));
     }
-    for (int i = 0; i < divisions; ++i)
-        for (int j = 0; j < divisions; ++j)
-            tasks.enqueue(Task((i*w)/divisions,std::min(((i+1)*w)/divisions,w),
-                          (j*h)/divisions,std::min(((j+1)*h)/divisions,h),samps));
-    for (int i = 0; i < num_threads; ++i) tasks.enqueue(Task()); //These are ending tasks
-    // Join the threads with the main thread
+    
+	// Join the threads with the main thread
     for(auto &t : threads) {
         t.join();
     }
